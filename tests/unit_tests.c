@@ -201,27 +201,27 @@ Test(base_operator_return, add02, .description="Add 2 1x4 matrices") {
 } 
 Test(base_operator_valgrind, add02) { expect_no_valgrind_errors(run_with_valgrind("add02")); }
 
-// Test(base_operator_return, mult01, .description="Multiply 2 matrices") {
-//     matrix_sf *G = copy_matrix(6, 4, (int[]){83, -22, 56, -1, 97, 94, 135, -10, 84, 40, -83, -4, 79, 28, 52, -101, 138, 146, 99, 0, -23, -73, -39, -47});
-//     matrix_sf *D = copy_matrix(4, 7, (int[]){-77, -20, 111, -2, 41, 117, 118, 21, -29, -45, 135, 98, 54, 131, 54, 1, 80, 143, -127, 148, 114, -81, 87, -33, -2, -6, 115, 59});
-//     matrix_sf *Z = mult_mats_sf(G, D);
-//     expect_matrices_equal(Z, 6, 7, (int[]){-3748, -1053, 14716, 4874, -5859, 16696, 13237, 2605, -5401, 17667, 31821, -3896, 35255, 38560, -9786, -3271, 1016, -6629, 17929, -756, 5454, 5494, -11127, 15002, 11260, -15, 6836, 12959, -2214, -6895, 16668, 33591, 7393, 38682, 46696, 1939, -1551, -837, -15292, -2862, -17810, -19496});
-//     free(G);
-//     free(D);
-//     free(Z);
-// }
-// Test(base_operator_valgrind, mult01) { expect_no_valgrind_errors(run_with_valgrind("mult01")); }
+Test(base_operator_return, mult01, .description="Multiply 2 matrices") {
+    matrix_sf *G = copy_matrix(6, 4, (int[]){83, -22, 56, -1, 97, 94, 135, -10, 84, 40, -83, -4, 79, 28, 52, -101, 138, 146, 99, 0, -23, -73, -39, -47});
+    matrix_sf *D = copy_matrix(4, 7, (int[]){-77, -20, 111, -2, 41, 117, 118, 21, -29, -45, 135, 98, 54, 131, 54, 1, 80, 143, -127, 148, 114, -81, 87, -33, -2, -6, 115, 59});
+    matrix_sf *Z = mult_mats_sf(G, D);
+    expect_matrices_equal(Z, 6, 7, (int[]){-3748, -1053, 14716, 4874, -5859, 16696, 13237, 2605, -5401, 17667, 31821, -3896, 35255, 38560, -9786, -3271, 1016, -6629, 17929, -756, 5454, 5494, -11127, 15002, 11260, -15, 6836, 12959, -2214, -6895, 16668, 33591, 7393, 38682, 46696, 1939, -1551, -837, -15292, -2862, -17810, -19496});
+    free(G);
+    free(D);
+    free(Z);
+}
+Test(base_operator_valgrind, mult01) { expect_no_valgrind_errors(run_with_valgrind("mult01")); }
 
-// Test(base_operator_return, mult02, .description="Multiply 2 matrices") {
-//     matrix_sf *U = copy_matrix(7, 1, (int[]){-38, 4, 46, -14, -102, -72, -27});
-//     matrix_sf *N = copy_matrix(1, 5, (int[]){52, 65, -94, -73, -48});
-//     matrix_sf *Z = mult_mats_sf(U, N);
-//     expect_matrices_equal(Z, 7, 5, (int[]){-1976, -2470, 3572, 2774, 1824, 208, 260, -376, -292, -192, 2392, 2990, -4324, -3358, -2208, -728, -910, 1316, 1022, 672, -5304, -6630, 9588, 7446, 4896, -3744, -4680, 6768, 5256, 3456, -1404, -1755, 2538, 1971, 1296});
-//     free(U);
-//     free(N);
-//     free(Z);
-// }
-// Test(base_operator_valgrind, mult02) { expect_no_valgrind_errors(run_with_valgrind("mult02")); }
+Test(base_operator_return, mult02, .description="Multiply 2 matrices") {
+    matrix_sf *U = copy_matrix(7, 1, (int[]){-38, 4, 46, -14, -102, -72, -27});
+    matrix_sf *N = copy_matrix(1, 5, (int[]){52, 65, -94, -73, -48});
+    matrix_sf *Z = mult_mats_sf(U, N);
+    expect_matrices_equal(Z, 7, 5, (int[]){-1976, -2470, 3572, 2774, 1824, 208, 260, -376, -292, -192, 2392, 2990, -4324, -3358, -2208, -728, -910, 1316, 1022, 672, -5304, -6630, 9588, 7446, 4896, -3744, -4680, 6768, 5256, 3456, -1404, -1755, 2538, 1971, 1296});
+    free(U);
+    free(N);
+    free(Z);
+}
+Test(base_operator_valgrind, mult02) { expect_no_valgrind_errors(run_with_valgrind("mult02")); }
 
 // Test(base_operator_return, trans01, .description="Transpose a 4x4 matrix") {
 //     matrix_sf *M = copy_matrix(4, 4, (int[]){-7, 78, -87, -113, -144, -94, 22, -75, -137, -130, -113, -106, 85, -120, 50, 55});

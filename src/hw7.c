@@ -12,18 +12,18 @@ void free_bst_sf(bst_sf *root) {
 }
 
 matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
-    // return NULL if does not satisfy requirements
+    // check requirements
     if (mat1->num_cols != mat2->num_cols)
         return NULL;
     if (mat1->num_rows != mat2->num_rows)
         return NULL;
      
-    // allocate a sum array
+    // allocate a sum matrix
     int num_elements = mat1->num_cols * mat1->num_rows;
     matrix_sf *sum = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
     sum->name = 'S';
-    sum->num_cols = mat1->num_cols;
     sum->num_rows = mat1->num_rows;
+    sum->num_cols = mat1->num_cols;
 
     // add element-wise
     for (int i = 0; i < num_elements; i++) {
@@ -34,7 +34,33 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
 }
 
 matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
-   return NULL;
+    // check requirements
+    if (mat1->num_cols != mat2->num_rows)
+        return NULL;
+    int shared_dimension = mat1->num_cols;
+
+    // allocate a result matrix
+    int num_elements = mat1->num_rows * mat2->num_cols;
+    matrix_sf *result = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
+    result->name = 'R';
+    result->num_rows = mat1->num_rows;
+    result->num_cols = mat2->num_cols;
+
+    // matrix multiplication
+    for (int i = 0; i < result->num_rows; i++) {
+        for (int j = 0; j < result->num_cols; j++) {
+            int sum = 0;
+            for (int k = 0; k < shared_dimension; j++) {
+                int index_1 = (i * mat1->num_rows) + k;
+                int index_2 = (k * mat2->num_rows) + j;
+                sum += mat1->values[index_1] + mat2->values[index_2];
+            }
+            int index_result = 0;
+            result->values[index_result] = sum;
+        }
+    }
+
+    return result;
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
