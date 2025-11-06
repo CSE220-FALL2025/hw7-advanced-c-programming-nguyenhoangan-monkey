@@ -64,7 +64,34 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
-    return NULL;
+    // allocate result matrix
+    int num_elements = mat->num_rows * mat->num_cols;
+    matrix_sf *result = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
+    result->name = 'R';
+    result->num_rows = mat->num_cols; // transpose dimension
+    result->num_cols = mat->num_rows; // transpose dimension
+
+    // transposing an element in (row, column)
+    // the index for source matrix is:
+    //      index = row * M->num_cols + column
+    //      row = index / M->num_cols
+    //      column = index % M->num_cols
+    //
+    // the index of destination matrix is:
+    //      index = column * M->num_rows + row
+    // here it is M->num_rows because it is transposed.
+    //
+    // which means
+    //      index = (index % M->num_cols) * M->num_rows + (index / M->num_cols)
+    for (int index = 0; index < num_elements; index++) {
+        int new_column = index % mat->num_cols;
+        int new_row = index / mat->num_cols;
+        int new_index = new_column * mat->num_rows + new_row;
+
+        result->values[new_index] = mat->values[index];
+    }
+
+    return result;
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
