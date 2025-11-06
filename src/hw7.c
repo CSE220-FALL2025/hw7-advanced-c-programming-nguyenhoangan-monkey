@@ -55,7 +55,7 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
                 int index_2 = (k * mat2->num_rows) + j;
                 sum += mat1->values[index_1] + mat2->values[index_2];
             }
-            int index_result = 0;
+            int index_result = (i * result->num_rows) + j;
             result->values[index_result] = sum;
         }
     }
