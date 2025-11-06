@@ -1,0 +1,47 @@
+{
+  "id": "Criterion v2.4.2",
+  "passed": 4,
+  "failed": 0,
+  "errored": 0,
+  "skipped": 0,
+  "test_suites": [
+    {
+      "name": "base_operator_valgrind",
+      "passed": 2,
+      "failed": 0,
+      "errored": 0,
+      "skipped": 0,
+      "tests": [
+        {
+          "name": "add02",
+          "assertions": 1,
+          "status": "PASSED"
+        },
+        {
+          "name": "add01",
+          "assertions": 1,
+          "status": "PASSED"
+        }
+      ]
+    },
+    {
+      "name": "base_operator_return",
+      "passed": 2,
+      "failed": 0,
+      "errored": 0,
+      "skipped": 0,
+      "tests": [
+        {
+          "name": "add02",
+          "assertions": 3,
+          "status": "PASSED"
+        },
+        {
+          "name": "add01",
+          "assertions": 3,
+          "status": "PASSED"
+        }
+      ]
+    }
+  ]
+}
