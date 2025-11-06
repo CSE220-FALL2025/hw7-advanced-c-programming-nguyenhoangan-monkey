@@ -37,7 +37,6 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     // check requirements
     if (mat1->num_cols != mat2->num_rows)
         return NULL;
-    int shared_dimension = mat1->num_cols;
 
     // allocate a result matrix
     int num_elements = mat1->num_rows * mat2->num_cols;
@@ -47,15 +46,16 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     result->num_cols = mat2->num_cols;
 
     // matrix multiplication
+    int shared_dimension = mat1->num_cols;
     for (int i = 0; i < result->num_rows; i++) {
         for (int j = 0; j < result->num_cols; j++) {
             int sum = 0;
-            for (int k = 0; k < shared_dimension; j++) {
-                int index_1 = (i * mat1->num_rows) + k;
-                int index_2 = (k * mat2->num_rows) + j;
-                sum += mat1->values[index_1] + mat2->values[index_2];
+            for (int k = 0; k < shared_dimension; k++) {
+                int index_1 = (i * mat1->num_cols) + k;
+                int index_2 = (k * mat2->num_cols) + j;
+                sum += mat1->values[index_1] * mat2->values[index_2];
             }
-            int index_result = (i * result->num_rows) + j;
+            int index_result = (i * result->num_cols) + j;
             result->values[index_result] = sum;
         }
     }
