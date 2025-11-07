@@ -223,23 +223,23 @@ Test(base_operator_return, mult02, .description="Multiply 2 matrices") {
 }
 Test(base_operator_valgrind, mult02) { expect_no_valgrind_errors(run_with_valgrind("mult02")); }
 
-// Test(base_operator_return, trans01, .description="Transpose a 4x4 matrix") {
-//     matrix_sf *M = copy_matrix(4, 4, (int[]){-7, 78, -87, -113, -144, -94, 22, -75, -137, -130, -113, -106, 85, -120, 50, 55});
-//     matrix_sf *G = transpose_mat_sf(M);
-//     expect_matrices_equal(G, 4, 4, (int[]){-7, -144, -137, 85, 78, -94, -130, -120, -87, 22, -113, 50, -113, -75, -106, 55});
-//     free(M);
-//     free(G);
-// }
-// Test(base_operator_valgrind, trans01) { expect_no_valgrind_errors(run_with_valgrind("trans01")); }
+Test(base_operator_return, trans01, .description="Transpose a 4x4 matrix") {
+    matrix_sf *M = copy_matrix(4, 4, (int[]){-7, 78, -87, -113, -144, -94, 22, -75, -137, -130, -113, -106, 85, -120, 50, 55});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 4, 4, (int[]){-7, -144, -137, 85, 78, -94, -130, -120, -87, 22, -113, 50, -113, -75, -106, 55});
+    free(M);
+    free(G);
+}
+Test(base_operator_valgrind, trans01) { expect_no_valgrind_errors(run_with_valgrind("trans01")); }
 
-// Test(base_operator_return, trans02, .description="Transpose a 6x3 matrix") {
-//     matrix_sf *X = copy_matrix(6, 3, (int[]){121, -1, 128, 78, -138, 138, -61, 51, -35, -84, 125, -83, -78, 138, 2, 81, -5, -36});
-//     matrix_sf *G = transpose_mat_sf(X);
-//     expect_matrices_equal(G, 3, 6, (int[]){121, 78, -61, -84, -78, 81, -1, -138, 51, 125, 138, -5, 128, 138, -35, -83, 2, -36});
-//     free(X);
-//     free(G);
-// }
-// Test(base_operator_valgrind, trans02) { expect_no_valgrind_errors(run_with_valgrind("trans02")); }
+Test(base_operator_return, trans02, .description="Transpose a 6x3 matrix") {
+    matrix_sf *X = copy_matrix(6, 3, (int[]){121, -1, 128, 78, -138, 138, -61, 51, -35, -84, 125, -83, -78, 138, 2, 81, -5, -36});
+    matrix_sf *G = transpose_mat_sf(X);
+    expect_matrices_equal(G, 3, 6, (int[]){121, 78, -61, -84, -78, 81, -1, -138, 51, 125, 138, -5, 128, 138, -35, -83, 2, -36});
+    free(X);
+    free(G);
+}
+Test(base_operator_valgrind, trans02) { expect_no_valgrind_errors(run_with_valgrind("trans02")); }
 
 // /* insert_bst_sf() tests */
 // void inorder_sf(bst_sf *root, char *output) {
