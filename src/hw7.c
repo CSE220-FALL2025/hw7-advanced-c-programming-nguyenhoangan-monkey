@@ -95,7 +95,32 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
-    return NULL;
+    // parsing the first two integers
+    int NR, NC;
+    char rest[2048];
+    if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
+        return NULL;
+
+    // allocate matrix
+    matrix_sf *M = malloc(sizeof(matrix_sf) + (NR*NC) * sizeof(int));
+    M->name = name;
+    M->num_rows = NR;
+    M->num_cols = NC;
+    
+    // scanning for integers up to capacity
+    int n, len;
+    char *rest_ptr = rest;
+    for (int i = 0; i < NR*NC; i++) {
+        if (sscanf(rest_ptr, "%d%n", &n, &len) == 1) {
+            M->values[i] = n;
+            rest_ptr += len;
+        }
+        else {
+            M->values[i] = 0;
+        }
+    }
+
+    return M;
 }
 
 char* infix2postfix_sf(char *infix) {
