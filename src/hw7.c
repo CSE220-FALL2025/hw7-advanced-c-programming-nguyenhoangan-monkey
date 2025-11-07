@@ -97,7 +97,8 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     // parsing the first two integers and the rest of the string
     int NR, NC;
-    char rest[2048];
+    const int REST_LEN = 4096;
+    char rest[REST_LEN];
     if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
         return NULL;
 
@@ -107,6 +108,14 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     M->num_rows = NR;
     M->num_cols = NC;
     
+    // replace invalid characters with space so strtol() can work
+    // valid characters are 0-9, spaces and minus sign
+    for (int i = 0; i < REST_LEN; i++) {
+        if (isdigit(rest[i]) || isspace(rest[i]) || rest[i] == '-')
+            continue;
+        rest[i] = ' ';
+    }
+
     // scanning for integers up to capacity
     // this is a very fragile code but because the prompt said that
     // the input is always correct, we can trade off a lot of error
