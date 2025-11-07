@@ -95,7 +95,7 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
-    // parsing the first two integers
+    // parsing the first two integers and the rest of the string
     int NR, NC;
     char rest[2048];
     if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
@@ -108,16 +108,18 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     M->num_cols = NC;
     
     // scanning for integers up to capacity
-    int n, len;
+    // this is a very fragile code but because the prompt said that
+    // the input is always correct, we can trade off a lot of error
+    // handling for this compact code
     char *rest_ptr = rest;
+    char *endptr;
     for (int i = 0; i < NR*NC; i++) {
-        if (sscanf(rest_ptr, "%d%n", &n, &len) == 1) {
-            M->values[i] = n;
-            rest_ptr += len;
-        }
-        else {
-            M->values[i] = 0;
-        }
+        long val = strtol(rest_ptr, &endptr, 10);
+        if (rest_ptr == endptr)
+            break;  // avoid infinite loop
+
+        M->values[i] = (int)val;
+        rest_ptr = endptr;
     }
 
     return M;
