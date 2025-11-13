@@ -229,7 +229,7 @@ char* infix2postfix_sf(char *infix) {
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     char *postfix = infix2postfix_sf(expr);
 
-    matrix_sf** stack = malloc(strlen(expr) * sizeof(matrix_sf*));
+    matrix_sf** stack = malloc(strlen(postfix) * sizeof(matrix_sf*));
     int top = -1;
 
     int len = strlen(postfix);
@@ -237,13 +237,11 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         char token = postfix[i];
 
         if (isalnum(token)) {
-            top++;
             matrix_sf *find_matrix = find_bst_sf(token, root);
-
-            if (find_matrix)
+            if (!find_matrix)
                 continue;
-            else
-                stack[top] = find_matrix;
+            top++;
+            stack[top] = find_matrix;
         }
         else if (token == '+') {
             matrix_sf *new_matrix = add_mats_sf(stack[top-1], stack[top]);
