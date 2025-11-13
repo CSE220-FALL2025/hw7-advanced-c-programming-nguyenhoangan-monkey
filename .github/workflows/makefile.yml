@@ -24,3 +24,6 @@ jobs:
 
     - name: Run tests
       run: make test
+
+    - name: Show test logs
+      run: cat tests/output/*.log || 

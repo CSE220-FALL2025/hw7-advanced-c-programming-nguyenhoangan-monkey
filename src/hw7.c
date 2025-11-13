@@ -37,7 +37,8 @@ void free_bst_sf(bst_sf *root) {
     free_bst_sf(root->left_child);
     free_bst_sf(root->right_child);
 
-    free(root->mat);
+    // free(root->mat);
+    // free(root);
 }
 
 matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {

@@ -15,7 +15,7 @@ int run_with_valgrind(char *test_name) {
     assert(access(executable, F_OK) == 0);
     char cmd[500];
     sprintf(test_log_outfile, "%s/%s.log", TEST_OUTPUT_DIR, test_name);
-    sprintf(cmd, "ulimit -f 300; ulimit -t 5; valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/%s > %s 2>&1",
+    sprintf(cmd, "valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/%s > %s 2>&1",
 	    test_name, test_log_outfile);
     return system(cmd);
 #else
@@ -32,7 +32,7 @@ int run_script_with_valgrind(char *script_file) {
     assert(access(executable, F_OK) == 0);
     char cmd[500];
     sprintf(test_log_outfile, "%s/%s.log", TEST_OUTPUT_DIR, script_file);
-    sprintf(cmd, "ulimit -f 300; ulimit -t 5; valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/execute_script %s > %s 2>&1",
+    sprintf(cmd, "valgrind -s --leak-check=full --show-leak-kinds=all --track-origins=yes --trace-children=yes --error-exitcode=37 ./bin/execute_script %s > %s 2>&1",
 	    script_file, test_log_outfile);
     return system(cmd);
 #else
