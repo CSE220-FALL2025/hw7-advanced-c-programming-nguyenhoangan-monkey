@@ -403,34 +403,34 @@ Test(base_create_matrix, create02, .description="Create a 7x3 matrix") {
     cr_expect_eq(mat->name, 'Z', "The new matrix did not have the expected name. Actual: %c, Expected: Z", mat->name);
 }
 
-// /* infix2postfix_sf() tests */
-// Test(base_infix2postfix, infix2postfix01, .description="Convert a simple infix expression to posfix") {
-//     char *actual = infix2postfix_sf("A+B*C");
-//     char *expected = "ABC*+";
-//     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
-//         actual, expected);
-// }
+/* infix2postfix_sf() tests */
+Test(base_infix2postfix, infix2postfix01, .description="Convert a simple infix expression to posfix") {
+    char *actual = infix2postfix_sf("A+B*C");
+    char *expected = "ABC*+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
 
-// Test(base_infix2postfix, infix2postfix02, .description="Convert a moderately complex expression to posfix") {
-//     char *actual = infix2postfix_sf("(A+B)*(C+D)");
-//     char *expected = "AB+CD+*";
-//     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
-//         actual, expected);
-// }
+Test(base_infix2postfix, infix2postfix02, .description="Convert a moderately complex expression to posfix") {
+    char *actual = infix2postfix_sf("(A+B)*(C+D)");
+    char *expected = "AB+CD+*";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
 
-// Test(base_infix2postfix, infix2postfix03, .description="Convert a moderately complex expression to posfix") {
-//     char *actual = infix2postfix_sf("(A+B)'*(C+D)*E'");
-//     char *expected = "AB+'CD+*E'*";
-//     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
-//         actual, expected);
-// }
+Test(base_infix2postfix, infix2postfix03, .description="Convert a moderately complex expression to posfix") {
+    char *actual = infix2postfix_sf("(A+B)'*(C+D)*E'");
+    char *expected = "AB+'CD+*E'*";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
 
-// Test(base_infix2postfix, infix2postfix04, .description="Convert a complex expression to posfix") {
-//     char *actual = infix2postfix_sf("Z'+(A+B)'*(C+D)*E+((F'+G')*Z)+M'");
-//     char *expected = "Z'AB+'CD+*E*+F'G'+Z*+M'+";
-//     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
-//         actual, expected);
-// }
+Test(base_infix2postfix, infix2postfix04, .description="Convert a complex expression to posfix") {
+    char *actual = infix2postfix_sf("Z'+(A+B)'*(C+D)*E+((F'+G')*Z)+M'");
+    char *expected = "Z'AB+'CD+*E*+F'G'+Z*+M'+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
 
 // /* evaluate_expr_sf tests*/
 // Test(base_evaluate_expr, expr01, .description="Given root of a tree, evaluation of an expression") {

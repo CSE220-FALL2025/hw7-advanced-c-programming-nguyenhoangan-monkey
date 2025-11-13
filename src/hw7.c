@@ -164,13 +164,68 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     return M;
 }
 
-// char* infix2postfix_sf(char *infix) {
-//     struct  {
-//         char value;
-        
-//     };
+int precedence(char op) {
+    if (op == '\'') return 3;
+    if (op == '*') return 2;
+    if (op == '+') return 1;
+    return 0;
+}
 
-// }
+char* infix2postfix_sf(char *infix) {
+    int string_len = strlen(infix);
+    char *postfix = malloc(string_len * 2);
+    int k = 0;
+
+    char *stack = malloc(string_len);
+    int top = -1;
+
+    for (int i = 0; i < string_len; i++) {
+        char token = infix[i];
+
+        if (isspace(token))
+            continue;
+        else if (isalnum(token)) {
+            postfix[k] = token;
+            k++;
+        }
+        else if (token == '(') {
+            top++;
+            stack[top] = token;
+        }
+        else if (token == ')') {
+            // popping the stack
+            while (top >= 0 && stack[top] != '(') {
+                postfix[k] = stack[top];
+                k++;
+                top--;
+            }
+            if (top >= 0 && stack[top] == '(')
+                top--;
+        }
+        // for operators, add to stack
+        else if (token == '+' || token == '*' || token == '\'') {
+            int is_stack_first = precedence(stack[top]) >= precedence(token);
+            while (top >= 0 && stack[top] != '(' && is_stack_first) {
+                postfix[k] = stack[top];
+                k++;
+                top--;
+            }
+            top++;
+            stack[top] = token;
+        }
+    }
+
+    // pop the remaining operators
+    while (top >= 0) {
+        postfix[k] = stack[top];
+        k++;
+        top--;
+    }
+
+    postfix[k] = '\0';
+    free(stack);
+    return postfix;
+}
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     return NULL;
