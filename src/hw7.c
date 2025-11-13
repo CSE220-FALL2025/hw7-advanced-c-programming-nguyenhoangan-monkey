@@ -227,7 +227,64 @@ char* infix2postfix_sf(char *infix) {
 }
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
-    return NULL;
+    char *postfix = infix2postfix_sf(expr);
+
+    matrix_sf** stack = malloc(strlen(expr) * sizeof(matrix_sf*));
+    int top = -1;
+
+    matrix_sf *result_matrix;
+    int len = strlen(postfix);
+    for (int i = 0; i < len; i++) {
+        char token = postfix[i];
+
+        if (isalnum(token)) {
+            top++;
+            matrix_sf *find_matrix = find_bst_sf(token, root);
+
+            if (find_matrix)
+                continue;
+            else
+                stack[top] = find_matrix;
+        }
+        else if (token == '+') {
+            matrix_sf *new_matrix = add_mats_sf(stack[top-1], stack[top]);
+
+            // freeing the temporary matrix
+            if (!isalpha(stack[top-1]->name))
+                free(stack[top-1]);
+            if (!isalpha(stack[top]->name))
+                free(stack[top]);
+
+            top--; // two matrices popped, one matrix pushed
+            new_matrix->name = '?';
+            stack[top] = new_matrix;
+        }
+        else if (token == '*') {
+            matrix_sf *new_matrix = mult_mats_sf(stack[top-1], stack[top]);
+
+            // freeing the temporary matrix
+            if (!isalpha(stack[top-1]->name))
+                free(stack[top-1]);
+            if (!isalpha(stack[top]->name))
+                free(stack[top]);
+
+            top--; // two matrices popped, one matrix pushed
+            new_matrix->name = '?';
+            stack[top] = new_matrix;
+        }
+        else if (token == '\'') {
+            matrix_sf *new_matrix = transpose_mat_sf(stack[top]);
+            new_matrix->name = '?';
+            stack[top] = new_matrix;
+        }
+    }
+
+    // return the matrix and free malloc memory
+    matrix_sf* result_matrix = stack[top];
+    result_matrix->name = name;
+    free(postfix);
+    free(stack);
+    return result_matrix;
 }
 
 matrix_sf *execute_script_sf(char *filename) {

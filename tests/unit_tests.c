@@ -432,24 +432,24 @@ Test(base_infix2postfix, infix2postfix04, .description="Convert a complex expres
         actual, expected);
 }
 
-// /* evaluate_expr_sf tests*/
-// Test(base_evaluate_expr, expr01, .description="Given root of a tree, evaluation of an expression") {
-//     bst_sf* root = build_bst();
-//     matrix_sf* result = evaluate_expr_sf('R', "G * C + F'", root);
-//     expect_matrices_equal(result, 7, 4, (int[]){4597, -1765, 206, -5401, -512, 159, -15, 647, -5547, 2117, -104, 6407, 1720, -523, 199, -1962, 12587, -4696, 281, -14286, 8973, -3330, 436, -9965, 3439, -1138, 222, -3721});
-// }
+/* evaluate_expr_sf tests*/
+Test(base_evaluate_expr, expr01, .description="Given root of a tree, evaluation of an expression") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "G * C + F'", root);
+    expect_matrices_equal(result, 7, 4, (int[]){4597, -1765, 206, -5401, -512, 159, -15, 647, -5547, 2117, -104, 6407, 1720, -523, 199, -1962, 12587, -4696, 281, -14286, 8973, -3330, 436, -9965, 3439, -1138, 222, -3721});
+}
 
-// Test(base_evaluate_expr, expr02, .description="Given root of a tree, evaluation of an expression") {
-//     bst_sf* root = build_bst();
-//     matrix_sf* result = evaluate_expr_sf('R', "(A + B) * H' * D", root);
-//     expect_matrices_equal(result, 3, 4, (int[]){-32848, 250466, 277155, 219671, 37088, -282796, -312930, -248026, 84704, -645868, -714690, -566458});
-// }
+Test(base_evaluate_expr, expr02, .description="Given root of a tree, evaluation of an expression") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "(A + B) * H' * D", root);
+    expect_matrices_equal(result, 3, 4, (int[]){-32848, 250466, 277155, 219671, 37088, -282796, -312930, -248026, 84704, -645868, -714690, -566458});
+}
 
-// Test(base_evaluate_expr, expr03, .description="Given root of a tree, evaluation of an expression") {
-//     bst_sf* root = build_bst();
-//     matrix_sf* result = evaluate_expr_sf('R', "(I + D' * C) * E' * J", root);
-//     expect_matrices_equal(result, 4, 3, (int[]){-11171376, 56535582, 3236371, 69463160, -416294603, -47900609, 76095851, -459940949, -56668593, 60848961, -362841916, -37213021});
-// }
+Test(base_evaluate_expr, expr03, .description="Given root of a tree, evaluation of an expression") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "(I + D' * C) * E' * J", root);
+    expect_matrices_equal(result, 4, 3, (int[]){-11171376, 56535582, 3236371, 69463160, -416294603, -47900609, 76095851, -459940949, -56668593, 60848961, -362841916, -37213021});
+}
 
 // /* execute_script_sf tests */
 // // 1. call execute_script_sf() to check for correctness()
