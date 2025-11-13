@@ -37,8 +37,8 @@ void free_bst_sf(bst_sf *root) {
     free_bst_sf(root->left_child);
     free_bst_sf(root->right_child);
 
-    // free(root->mat);
-    // free(root);
+    free(root->mat);
+    free(root);
 }
 
 matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
@@ -164,9 +164,13 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     return M;
 }
 
-char* infix2postfix_sf(char *infix) {
-    return NULL;
-}
+// char* infix2postfix_sf(char *infix) {
+//     struct  {
+//         char value;
+        
+//     };
+
+// }
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     return NULL;
