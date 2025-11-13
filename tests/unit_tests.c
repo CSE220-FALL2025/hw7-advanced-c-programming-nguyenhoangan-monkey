@@ -288,23 +288,23 @@ Test(base_insert_bst, insert_bst02, .description="Test if insert_bst_sf creates 
     // Note: test does not deallocate memory of BST.    
 }
 
-// Test(base_insert_bst, insert_bst03, .description="Test if insert_bst_sf creates a valid BST.") {
-//     bst_sf *root = NULL;
-//     char names[] = "GTHRNBVCUJELMOPSQZA";
-//     matrix_sf *mats[strlen(names)];
-//     for (size_t i = 0; i < strlen(names); i++) {
-//         mats[i] = malloc(sizeof(matrix_sf));
-//         mats[i]->name = names[i];
-//         root = insert_bst_sf(mats[i], root);
-//     }
-//     char output[27] = {0};
-//     inorder_sf(root, output);
-//     sort_string_sf(names);
-//     cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
-//     for (size_t i = 0; i < strlen(names); i++)
-//         free(mats[i]);
-//     // Note: test does not deallocate memory of BST.    
-// }
+Test(base_insert_bst, insert_bst03, .description="Test if insert_bst_sf creates a valid BST.") {
+    bst_sf *root = NULL;
+    char names[] = "GTHRNBVCUJELMOPSQZA";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
 
 /* find_bst_sf() tests */
 Test(base_find_bst, search_bst01, .description="Test if find_bst returns the correct matrix.") {
@@ -377,18 +377,18 @@ Test(base_find_bst, search_bst03, .description="Test if find_bst returns the cor
     // Note: test does not deallocate memory of BST.  
 }
 
-// /* free_bst_sf() tests */
-// Test(base_free_bst, free_bst01, .description="Test if BST is properly deallocated.") {
-//     expect_no_valgrind_errors(run_with_valgrind("free_bst01"));
-// }
+/* free_bst_sf() tests */
+Test(base_free_bst, free_bst01, .description="Test if BST is properly deallocated.") {
+    expect_no_valgrind_errors(run_with_valgrind("free_bst01"));
+}
 
-// Test(base_free_bst, free_bst02, .description="Test if BST is properly deallocated.") {
-//     expect_no_valgrind_errors(run_with_valgrind("free_bst02"));
-// }
+Test(base_free_bst, free_bst02, .description="Test if BST is properly deallocated.") {
+    expect_no_valgrind_errors(run_with_valgrind("free_bst02"));
+}
 
-// Test(base_free_bst, free_bst03, .description="Test if BST is properly deallocated.") {
-//     expect_no_valgrind_errors(run_with_valgrind("free_bst03"));
-// }
+Test(base_free_bst, free_bst03, .description="Test if BST is properly deallocated.") {
+    expect_no_valgrind_errors(run_with_valgrind("free_bst03"));
+}
 
 /* create_matrix_sf() tests*/
 Test(base_create_matrix, create01, .description="Create an 8x1 matrix") {
