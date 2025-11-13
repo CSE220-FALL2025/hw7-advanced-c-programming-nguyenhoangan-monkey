@@ -49,14 +49,14 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
         return NULL;
      
     // allocate a sum matrix
-    int num_elements = mat1->num_cols * mat1->num_rows;
+    unsigned int num_elements = mat1->num_cols * mat1->num_rows;
     matrix_sf *sum = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
     sum->name = 'S';
     sum->num_rows = mat1->num_rows;
     sum->num_cols = mat1->num_cols;
 
     // add element-wise
-    for (int i = 0; i < num_elements; i++) {
+    for (unsigned int i = 0; i < num_elements; i++) {
         sum->values[i] = mat1->values[i] + mat2->values[i];
     }
 
@@ -69,18 +69,18 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
         return NULL;
 
     // allocate a result matrix
-    int num_elements = mat1->num_rows * mat2->num_cols;
+    unsigned int num_elements = mat1->num_rows * mat2->num_cols;
     matrix_sf *result = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
     result->name = 'R';
     result->num_rows = mat1->num_rows;
     result->num_cols = mat2->num_cols;
 
     // matrix multiplication
-    int shared_dimension = mat1->num_cols;
-    for (int i = 0; i < result->num_rows; i++) {
-        for (int j = 0; j < result->num_cols; j++) {
+    unsigned int shared_dimension = mat1->num_cols;
+    for (unsigned int i = 0; i < result->num_rows; i++) {
+        for (unsigned int j = 0; j < result->num_cols; j++) {
             int sum = 0;
-            for (int k = 0; k < shared_dimension; k++) {
+            for (unsigned int k = 0; k < shared_dimension; k++) {
                 int index_1 = (i * mat1->num_cols) + k;
                 int index_2 = (k * mat2->num_cols) + j;
                 sum += mat1->values[index_1] * mat2->values[index_2];
@@ -95,7 +95,7 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     // allocate result matrix
-    int num_elements = mat->num_rows * mat->num_cols;
+    unsigned int num_elements = mat->num_rows * mat->num_cols;
     matrix_sf *result = malloc(sizeof(matrix_sf) + (size_t)num_elements * sizeof(int));
     result->name = 'R';
     result->num_rows = mat->num_cols; // transpose dimension
@@ -113,10 +113,10 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     //
     // which means
     //      index = (index % M->num_cols) * M->num_rows + (index / M->num_cols)
-    for (int index = 0; index < num_elements; index++) {
-        int new_column = index % mat->num_cols;
-        int new_row = index / mat->num_cols;
-        int new_index = new_column * mat->num_rows + new_row;
+    for (unsigned int index = 0; index < num_elements; index++) {
+        unsigned int new_column = index % mat->num_cols;
+        unsigned int new_row = index / mat->num_cols;
+        unsigned int new_index = new_column * mat->num_rows + new_row;
 
         result->values[new_index] = mat->values[index];
     }
@@ -126,7 +126,7 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     // parsing the first two integers and the rest of the string
-    int NR, NC;
+    unsigned int NR, NC;
     const int REST_LEN = 4096;
     char rest[REST_LEN];
     if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
@@ -140,7 +140,7 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     
     // replace invalid characters with space so strtol() can work
     // valid characters are 0-9, spaces and minus sign
-    for (int i = 0; i < REST_LEN; i++) {
+    for (unsigned int i = 0; i < REST_LEN; i++) {
         if (isdigit(rest[i]) || isspace(rest[i]) || rest[i] == '-')
             continue;
         rest[i] = ' ';
@@ -152,7 +152,7 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     // handling for this compact code
     char *rest_ptr = rest;
     char *endptr;
-    for (int i = 0; i < NR*NC; i++) {
+    for (unsigned int i = 0; i < NR*NC; i++) {
         long val = strtol(rest_ptr, &endptr, 10);
         if (rest_ptr == endptr)
             break;  // avoid infinite loop
@@ -232,7 +232,6 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     matrix_sf** stack = malloc(strlen(expr) * sizeof(matrix_sf*));
     int top = -1;
 
-    matrix_sf *result_matrix;
     int len = strlen(postfix);
     for (int i = 0; i < len; i++) {
         char token = postfix[i];
@@ -280,7 +279,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     }
 
     // return the matrix and free malloc memory
-    matrix_sf* result_matrix = stack[top];
+    matrix_sf *result_matrix = stack[top];
     result_matrix->name = name;
     free(postfix);
     free(stack);
