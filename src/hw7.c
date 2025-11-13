@@ -173,7 +173,7 @@ int precedence(char op) {
 
 char* infix2postfix_sf(char *infix) {
     int string_len = strlen(infix);
-    char *postfix = malloc(string_len * 2);
+    char *postfix = malloc(string_len + 1);
     int k = 0;
 
     char *stack = malloc(string_len);
@@ -204,8 +204,7 @@ char* infix2postfix_sf(char *infix) {
         }
         // for operators, add to stack
         else if (token == '+' || token == '*' || token == '\'') {
-            int is_stack_first = precedence(stack[top]) >= precedence(token);
-            while (top >= 0 && stack[top] != '(' && is_stack_first) {
+            while (top >= 0 && stack[top] != '(' && precedence(stack[top]) >= precedence(token)) {
                 postfix[k] = stack[top];
                 k++;
                 top--;
