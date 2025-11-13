@@ -241,52 +241,52 @@ Test(base_operator_return, trans02, .description="Transpose a 6x3 matrix") {
 }
 Test(base_operator_valgrind, trans02) { expect_no_valgrind_errors(run_with_valgrind("trans02")); }
 
-// /* insert_bst_sf() tests */
-// void inorder_sf(bst_sf *root, char *output) {
-//     if (!root) return;
-//     inorder_sf(root->left_child, output);
-//     char s[2] = {root->mat->name};
-//     strcat(output, s);
-//     inorder_sf(root->right_child, output);
-// }
-// int compare_chars_sf(const void* a, const void* b) { return (*(char*)a - *(char*)b); }
-// void sort_string_sf(char* str) { qsort(str, strlen(str), sizeof(char), compare_chars_sf); }
+/* insert_bst_sf() tests */
+void inorder_sf(bst_sf *root, char *output) {
+    if (!root) return;
+    inorder_sf(root->left_child, output);
+    char s[2] = {root->mat->name};
+    strcat(output, s);
+    inorder_sf(root->right_child, output);
+}
+int compare_chars_sf(const void* a, const void* b) { return (*(char*)a - *(char*)b); }
+void sort_string_sf(char* str) { qsort(str, strlen(str), sizeof(char), compare_chars_sf); }
 
-// Test(base_insert_bst, insert_bst01, .description="Test if insert_bst_sf creates a valid BST.") {
-//     bst_sf *root = NULL;
-//     char names[] = "HBZ";
-//     matrix_sf *mats[strlen(names)];
-//     for (size_t i = 0; i < strlen(names); i++) {
-//         mats[i] = malloc(sizeof(matrix_sf));
-//         mats[i]->name = names[i];
-//         root = insert_bst_sf(mats[i], root);
-//     }
-//     char output[27] = {0};
-//     inorder_sf(root, output);
-//     sort_string_sf(names);
-//     cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
-//     for (size_t i = 0; i < strlen(names); i++)
-//         free(mats[i]);
-//     // Note: test does not deallocate memory of BST.    
-// }
+Test(base_insert_bst, insert_bst01, .description="Test if insert_bst_sf creates a valid BST.") {
+    bst_sf *root = NULL;
+    char names[] = "HBZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
 
-// Test(base_insert_bst, insert_bst02, .description="Test if insert_bst_sf creates a valid BST.") {
-//     bst_sf *root = NULL;
-//     char names[] = "HABETZ";
-//     matrix_sf *mats[strlen(names)];
-//     for (size_t i = 0; i < strlen(names); i++) {
-//         mats[i] = malloc(sizeof(matrix_sf));
-//         mats[i]->name = names[i];
-//         root = insert_bst_sf(mats[i], root);
-//     }
-//     char output[27] = {0};
-//     inorder_sf(root, output);
-//     sort_string_sf(names);
-//     cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
-//     for (size_t i = 0; i < strlen(names); i++)
-//         free(mats[i]);
-//     // Note: test does not deallocate memory of BST.    
-// }
+Test(base_insert_bst, insert_bst02, .description="Test if insert_bst_sf creates a valid BST.") {
+    bst_sf *root = NULL;
+    char names[] = "HABETZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
 
 // Test(base_insert_bst, insert_bst03, .description="Test if insert_bst_sf creates a valid BST.") {
 //     bst_sf *root = NULL;
