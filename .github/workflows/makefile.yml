@@ -27,4 +27,4 @@ jobs:
 
     - name: Show test logs
       run: |
-        cat tests/output/*.log || true
+        cat tests.out/*.log || true
