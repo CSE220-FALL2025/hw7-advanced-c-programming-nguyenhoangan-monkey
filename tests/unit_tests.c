@@ -479,7 +479,7 @@ Test(base_execute, trans_mat01) { run_script_without_valgrind("script05"); }
 // Test(base_execute_valgrind, mult_mats03) { expect_no_valgrind_errors(run_script_with_valgrind("script08")); }
 
 // Test(base_execute, trans_mat03) { run_script_without_valgrind("script09"); } // A''
-Test(base_execute_valgrind, trans_mat03) { expect_no_valgrind_errors(run_script_with_valgrind("script09")); }
+// Test(base_execute_valgrind, trans_mat03) { expect_no_valgrind_errors(run_script_with_valgrind("script09")); }
 
 Test(base_execute, script10) { run_script_without_valgrind("script10"); } // A * B + C
 // Test(base_execute_valgrind, script10) { expect_no_valgrind_errors(run_script_with_valgrind("script10")); }

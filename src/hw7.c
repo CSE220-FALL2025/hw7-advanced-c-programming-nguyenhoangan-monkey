@@ -153,7 +153,7 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     // handling for this compact code
     char *rest_ptr = rest;
     char *endptr;
-    for (unsigned int i = 0; i < NR*NC; i++) {
+    for (int i = 0; i < NR*NC; i++) {
         long val = strtol(rest_ptr, &endptr, 10);
         if (rest_ptr == endptr) {
             free(M);
@@ -234,7 +234,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     if (postfix == NULL)
         return NULL;
 
-    matrix_sf** stack = malloc(strlen(postfix) * sizeof(matrix_sf*));
+    matrix_sf** stack = malloc(strlen(postfix) * 3 * sizeof(matrix_sf*));
     int top = -1;
 
     int len = strlen(postfix);
@@ -249,35 +249,42 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             stack[top] = find_matrix;
         }
         else if (token == '+') {
-            matrix_sf *new_matrix = add_mats_sf(stack[top-1], stack[top]);
+            matrix_sf *first_matrix  = stack[top-1];
+            matrix_sf *second_matrix = stack[top];
 
-            // freeing the temporary matrix
-            if (!isalpha(stack[top-1]->name))
-                free(stack[top-1]);
-            if (!isalpha(stack[top]->name))
-                free(stack[top]);
-
-            top--; // two matrices popped, one matrix pushed
+            // this matrix is temporary
+            matrix_sf *new_matrix = add_mats_sf(first_matrix, second_matrix);
             new_matrix->name = '?';
-            stack[top] = new_matrix;
+
+            // freeing matrix that has been used
+            if (first_matrix->name == '?')  free(first_matrix);
+            if (second_matrix->name == '?') free(second_matrix);
+
+            stack[top-1] = new_matrix;
+            top--; // two matrices popped, one matrix pushed
         }
         else if (token == '*') {
+            matrix_sf *first_matrix  = stack[top-1];
+            matrix_sf *second_matrix = stack[top];
+
             matrix_sf *new_matrix = mult_mats_sf(stack[top-1], stack[top]);
-
-            // freeing the temporary matrix
-            if (!isalpha(stack[top-1]->name))
-                free(stack[top-1]);
-            if (!isalpha(stack[top]->name))
-                free(stack[top]);
-
-            top--; // two matrices popped, one matrix pushed
             new_matrix->name = '?';
-            stack[top] = new_matrix;
+
+            if (first_matrix->name == '?')  free(first_matrix);
+            if (second_matrix->name == '?') free(second_matrix);
+
+            stack[top-1] = new_matrix;
+            top--; // two matrices popped, one matrix pushed
         }
         else if (token == '\'') {
-            matrix_sf *new_matrix = transpose_mat_sf(stack[top]);
+            matrix_sf *transposing_matrix  = stack[top];
+
+            matrix_sf *new_matrix = transpose_mat_sf(transposing_matrix);
             new_matrix->name = '?';
-            stack[top] = new_matrix;
+
+            if (transposing_matrix->name == '?') free(transposing_matrix);
+
+            stack[top] = new_matrix; // one matrix popped, one matrix pushed
         }
     }
 
@@ -299,7 +306,8 @@ matrix_sf *execute_script_sf(char *filename) {
     bst_sf *root = NULL; // new binary search tree
 
     // read file per line, maximum MAX_LINE_LEN lines
-    while (getline(&str, MAX_LINE_LEN, file) != -1) {
+    const size_t MAX_LINES = MAX_LINE_LEN;
+    while (getline(&str, MAX_LINES, file) != -1) {
         char matrix_name;
         if (sscanf(str, " %c = %4095[^\n] ", &matrix_name, str_buffer) != 2)
             continue; // should not happen with blank lines
@@ -311,8 +319,14 @@ matrix_sf *execute_script_sf(char *filename) {
         int is_an_expression = 0;
         for (int i = 0; str_buffer[i] != '\0'; i++) {
             char check = (unsigned char)str_buffer[i];
-            if (isalpha(check)) is_an_expression = 1;
-            if (isdigit(check)) is_a_matrix = 1;
+            if (isdigit(check)) {
+                is_a_matrix = 1;
+                break;
+            }
+            if (isalpha(check)) {
+                is_an_expression = 1;
+                break;
+            }
         }
         
         if (is_a_matrix && !is_an_expression) {
