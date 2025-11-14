@@ -291,68 +291,65 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
 }
 
 matrix_sf *execute_script_sf(char *filename) {
-    return NULL;
-}
-// matrix_sf *execute_script_sf(char *filename) {
-//     // variables to help with reading file 
-//     char *str = NULL;
-//     FILE *file = fopen(filename, "r");
-//     size_t max_line_size = MAX_LINE_LEN;
-//     char str_buffer[MAX_LINE_LEN];
+    // variables to help with reading file 
+    char *str = NULL;
+    FILE *file = fopen(filename, "r");
+    size_t max_line_size = MAX_LINE_LEN;
+    char str_buffer[MAX_LINE_LEN];
 
-//     matrix_sf *new_matrix = NULL; // last matrix to be assigned/calculated
-//     bst_sf *root = NULL; // new binary search tree
+    matrix_sf *new_matrix = NULL; // last matrix to be assigned/calculated
+    bst_sf *root = NULL; // new binary search tree
 
-//     // read file per line
-//     while (getline(&str, &max_line_size, file) != -1) {
-//         char matrix_name;
-//         if (sscanf(str, " %c = %[^\n] ", &matrix_name, str_buffer) != 2)
-//             continue; // should not happen with blank lines
+    // read file per line
+    while (getline(&str, &max_line_size, file) != -1) {
+        char matrix_name;
+        if (sscanf(str, " %c = %[^\n] ", &matrix_name, str_buffer) != 2)
+            continue; // should not happen with blank lines
         
-//         // check whether it is an expression or a matrix definition
-//         // an expression contains letters, matrix definitions don't
-//         // matrix definitions contain numbers, expressions don't
-//         int is_a_matrix = 0;
-//         int is_an_expression = 0;
-//         for (int i = 0; str_buffer[i] != '\0'; i++) {
-//             char check = (unsigned char)str_buffer[i];
-//             if (isalpha(check)) is_an_expression = 1;
-//             if (isdigit(check)) is_a_matrix = 1;
-//         }
+        // check whether it is an expression or a matrix definition
+        // an expression contains letters, matrix definitions don't
+        // matrix definitions contain numbers, expressions don't
+        int is_a_matrix = 0;
+        int is_an_expression = 0;
+        for (int i = 0; str_buffer[i] != '\0'; i++) {
+            char check = (unsigned char)str_buffer[i];
+            if (isalpha(check)) is_an_expression = 1;
+            if (isdigit(check)) is_a_matrix = 1;
+        }
         
-//         if (is_a_matrix && !is_an_expression) {
-//             new_matrix = create_matrix_sf(matrix_name, str_buffer);
-//             if (new_matrix == NULL) continue;
-//             new_matrix->name = matrix_name;
+        if (is_a_matrix && !is_an_expression) {
+            new_matrix = create_matrix_sf(matrix_name, str_buffer);
+            if (new_matrix == NULL) continue;
+            new_matrix->name = matrix_name;
             
-//             matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
-//             if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
-//         }
-//         else if (!is_a_matrix && is_an_expression) {
-//             new_matrix = evaluate_expr_sf(matrix_name, str_buffer, root);
-//             if (new_matrix == NULL) continue;
-//             new_matrix->name = matrix_name;
+            matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
+            if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
+        }
+        else if (!is_a_matrix && is_an_expression) {
+            new_matrix = evaluate_expr_sf(matrix_name, str_buffer, root);
+            if (new_matrix == NULL) continue;
+            new_matrix->name = matrix_name;
 
-//             matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
-//             if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
-//         }
-//         else {
-//             continue;
-//         }
-//     }
+            matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
+            if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
+        }
+        else {
+            continue;
+        }
+    }
 
-//     // copy the matrix to a different allocation
-//     matrix_sf *result_matrix = NULL;
-//     if (new_matrix != NULL) {
-//         result_matrix = copy_matrix(new_matrix->num_rows, new_matrix->num_cols, new_matrix->values);
-//         result_matrix->name = new_matrix->name;
-//     }
+    // copy the matrix to a different allocation
+    matrix_sf *result_matrix = NULL;
+    if (new_matrix != NULL) {
+        result_matrix = copy_matrix(new_matrix->num_rows, new_matrix->num_cols, new_matrix->values);
+        result_matrix->name = new_matrix->name;
+    }
 
-//     fclose(file);
-//     free(str);
-//     free_bst_sf(root);
-//     return result_matrix;
-// }
+    fclose(file);
+    free(str);
+    free_bst_sf(root);
+    return result_matrix;
+}
 
 // This is a utility function used during testing. Feel free to adapt the code to implement some of
 // the assignment. Feel equally free to ignore it.
