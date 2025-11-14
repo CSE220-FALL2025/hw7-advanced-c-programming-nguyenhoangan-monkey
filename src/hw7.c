@@ -23,9 +23,9 @@ bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
 matrix_sf* find_bst_sf(char name, bst_sf *root) {
     if (root == NULL) return NULL;
 
-    if (name == root->mat->name)      return root->mat;
-    else if (name < root->mat->name)  return find_bst_sf(name, root->left_child);
-    else if (name > root->mat->name)  return find_bst_sf(name, root->right_child);
+    if      (name < root->mat->name) return find_bst_sf(name, root->left_child);
+    else if (name > root->mat->name) return find_bst_sf(name, root->right_child);
+    else                             return root->mat;
 }
 
 void free_bst_sf(bst_sf *root) {
@@ -306,8 +306,8 @@ matrix_sf *execute_script_sf(char *filename) {
     bst_sf *root = NULL; // new binary search tree
 
     // read file per line, maximum MAX_LINE_LEN lines
-    const size_t MAX_LINES = MAX_LINE_LEN;
-    while (getline(&str, MAX_LINES, file) != -1) {
+    size_t MAX_LINES = MAX_LINE_LEN;
+    while (getline(&str, &MAX_LINES, file) != -1) {
         char matrix_name;
         if (sscanf(str, " %c = %4095[^\n] ", &matrix_name, str_buffer) != 2)
             continue; // should not happen with blank lines
