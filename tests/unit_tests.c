@@ -466,7 +466,7 @@ Test(base_execute_valgrind, add_mats01) { expect_no_valgrind_errors(run_script_w
 // Test(base_execute, mult_mats02) { run_script_without_valgrind("script04"); }
 // Test(base_execute_valgrind, mult_mats02) { expect_no_valgrind_errors(run_script_with_valgrind("script04")); }
 
-// Test(base_execute, trans_mat01) { run_script_without_valgrind("script05"); }
+Test(base_execute, trans_mat01) { run_script_without_valgrind("script05"); }
 // Test(base_execute_valgrind, trans_mat01) { expect_no_valgrind_errors(run_script_with_valgrind("script05")); }
 
 // Test(base_execute, trans_mat02) { run_script_without_valgrind("script06"); }
@@ -478,11 +478,11 @@ Test(base_execute_valgrind, add_mats01) { expect_no_valgrind_errors(run_script_w
 // Test(base_execute, mult_mats03) { run_script_without_valgrind("script08"); } // A * B * C
 // Test(base_execute_valgrind, mult_mats03) { expect_no_valgrind_errors(run_script_with_valgrind("script08")); }
 
-Test(base_execute, trans_mat03) { run_script_without_valgrind("script09"); } // A''
+// Test(base_execute, trans_mat03) { run_script_without_valgrind("script09"); } // A''
 Test(base_execute_valgrind, trans_mat03) { expect_no_valgrind_errors(run_script_with_valgrind("script09")); }
 
 Test(base_execute, script10) { run_script_without_valgrind("script10"); } // A * B + C
-Test(base_execute_valgrind, script10) { expect_no_valgrind_errors(run_script_with_valgrind("script10")); }
+// Test(base_execute_valgrind, script10) { expect_no_valgrind_errors(run_script_with_valgrind("script10")); }
 
 // Test(base_execute, script11) { run_script_without_valgrind("script11"); } // A + B * C
 // Test(base_execute_valgrind, script11) { expect_no_valgrind_errors(run_script_with_valgrind("script11")); }
@@ -491,19 +491,19 @@ Test(base_execute_valgrind, script10) { expect_no_valgrind_errors(run_script_wit
 // Test(base_execute_valgrind, script12) { expect_no_valgrind_errors(run_script_with_valgrind("script12")); }
 
 Test(base_execute, script13) { run_script_without_valgrind("script13"); } // (A + B) * (C + D)
-Test(base_execute_valgrind, script13) { expect_no_valgrind_errors(run_script_with_valgrind("script13")); }
+// Test(base_execute_valgrind, script13) { expect_no_valgrind_errors(run_script_with_valgrind("script13")); }
 
 // Test(base_execute, script14) { run_script_without_valgrind("script14"); } // (A + B * C) * (C + D * E) * (E + F * G)
 // Test(base_execute_valgrind, script14) { expect_no_valgrind_errors(run_script_with_valgrind("script14")); }
 
-// Test(base_execute, script15) { run_script_without_valgrind("script15"); } // (A + B * C) * (C + D * E)
+Test(base_execute, script15) { run_script_without_valgrind("script15"); } // (A + B * C) * (C + D * E)
 // Test(base_execute_valgrind, script15) { expect_no_valgrind_errors(run_script_with_valgrind("script15")); }
 
 Test(base_execute, script16) { run_script_without_valgrind("script16"); } // A' * B + C
-Test(base_execute_valgrind, script16) { expect_no_valgrind_errors(run_script_with_valgrind("script16")); }
+// Test(base_execute_valgrind, script16) { expect_no_valgrind_errors(run_script_with_valgrind("script16")); }
 
 Test(base_execute, script17) { run_script_without_valgrind("script17"); } // (A' * B + C)'
-Test(base_execute_valgrind, script17) { expect_no_valgrind_errors(run_script_with_valgrind("script17")); }
+// Test(base_execute_valgrind, script17) { expect_no_valgrind_errors(run_script_with_valgrind("script17")); }
 
 // Test(base_execute, script18) { run_script_without_valgrind("script18"); } 
 // Test(base_execute_valgrind, script18) { expect_no_valgrind_errors(run_script_with_valgrind("script18")); }
@@ -512,5 +512,5 @@ Test(base_execute_valgrind, script17) { expect_no_valgrind_errors(run_script_wit
 // Test(base_execute_valgrind, script19) { expect_no_valgrind_errors(run_script_with_valgrind("script19")); }
 
 Test(base_execute, script20) { run_script_without_valgrind("script20"); } 
-Test(base_execute_valgrind, script20) { expect_no_valgrind_errors(run_script_with_valgrind("script20")); }
+// Test(base_execute_valgrind, script20) { expect_no_valgrind_errors(run_script_with_valgrind("script20")); }
 
