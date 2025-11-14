@@ -315,29 +315,24 @@ matrix_sf *execute_script_sf(char *filename) {
             if (isdigit(check)) is_a_matrix = 1;
         }
         
-        // defining a matrix then inserting it to a BST
-        if (is_a_matrix) {
+        if (is_a_matrix && !is_an_expression) {
             new_matrix = create_matrix_sf(matrix_name, str_buffer);
-            if (new_matrix == NULL) // if it is invalid
-                continue;
+            if (new_matrix == NULL) continue;
             new_matrix->name = matrix_name;
             
-            // only insert a new matrix if that matrix doesn't exist in the BST.
             matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
-            if (find_matrix == NULL)
-                root = insert_bst_sf(new_matrix, root);
+            if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
         }
-        // evaluate a matrix operation
-        if (is_an_expression) {
+        else if (!is_a_matrix && is_an_expression) {
             new_matrix = evaluate_expr_sf(matrix_name, str_buffer, root);
-            if (new_matrix == NULL) // if it is invalid
-                continue;
+            if (new_matrix == NULL) continue;
             new_matrix->name = matrix_name;
 
-            // only insert a new matrix if that matrix doesn't exist in the BST.
             matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
-            if (find_matrix == NULL)
-                root = insert_bst_sf(new_matrix, root);
+            if (find_matrix == NULL) root = insert_bst_sf(new_matrix, root);
+        }
+        else {
+            continue;
         }
     }
 
