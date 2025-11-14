@@ -127,9 +127,8 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     // parsing the first two integers and the rest of the string
     int NR, NC;
-    const unsigned int REST_LEN = 4096;
-    char rest[REST_LEN];
-    if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
+    char rest[MAX_LINE_LEN];
+    if (sscanf(expr, " %d %d %127[^\n]", &NR, &NC, rest) != 3)
         return NULL;
 
     // allocate matrix
@@ -180,7 +179,7 @@ char* infix2postfix_sf(char *infix) {
     char *postfix = malloc(string_len + 1);
     int k = 0;
 
-    char *stack = malloc(string_len);
+    char *stack = malloc(string_len * 2 + 10);
     int top = -1;
 
     for (int i = 0; i < string_len; i++) {
@@ -303,7 +302,7 @@ matrix_sf *execute_script_sf(char *filename) {
     // read file per line
     while (getline(&str, &max_line_size, file) != -1) {
         char matrix_name;
-        if (sscanf(str, " %c = %[^\n] ", &matrix_name, str_buffer) != 2)
+        if (sscanf(str, " %c = %127[^\n] ", &matrix_name, str_buffer) != 2)
             continue; // should not happen with blank lines
         
         // check whether it is an expression or a matrix definition
