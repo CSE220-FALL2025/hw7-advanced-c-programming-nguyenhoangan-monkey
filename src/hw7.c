@@ -126,24 +126,26 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     // parsing the first two integers and the rest of the string
-    unsigned int NR, NC;
-    const int REST_LEN = 4096;
+    int NR, NC;
+    const unsigned int REST_LEN = 4096;
     char rest[REST_LEN];
     if (sscanf(expr, " %d %d %[^\n]", &NR, &NC, rest) != 3)
         return NULL;
 
     // allocate matrix
     matrix_sf *M = malloc(sizeof(matrix_sf) + (NR*NC) * sizeof(int));
+    if (M == NULL)
+        return NULL;
+
     M->name = name;
-    M->num_rows = NR;
-    M->num_cols = NC;
+    M->num_rows = (unsigned int)NR;
+    M->num_cols = (unsigned int)NC;
     
     // replace invalid characters with space so strtol() can work
     // valid characters are 0-9, spaces and minus sign
-    for (unsigned int i = 0; i < REST_LEN; i++) {
-        if (isdigit(rest[i]) || isspace(rest[i]) || rest[i] == '-')
-            continue;
-        rest[i] = ' ';
+    for (unsigned int i = 0; i < (unsigned int)REST_LEN; i++) {
+        if (!isdigit(rest[i]) && !isspace(rest[i]) && !rest[i] == '-')
+            rest[i] = ' ';
     }
 
     // scanning for integers up to capacity
@@ -154,8 +156,10 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     char *endptr;
     for (unsigned int i = 0; i < NR*NC; i++) {
         long val = strtol(rest_ptr, &endptr, 10);
-        if (rest_ptr == endptr)
-            break;  // avoid infinite loop
+        if (rest_ptr == endptr) {
+            free(M);
+            return NULL;  // avoid infinite loop
+        }
 
         M->values[i] = (int)val;
         rest_ptr = endptr;
@@ -285,7 +289,69 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
 }
 
 matrix_sf *execute_script_sf(char *filename) {
-   return NULL;
+    // variables to help with reading file 
+    char *str = NULL;
+    FILE *file = fopen(filename, "r");
+    size_t max_line_size = MAX_LINE_LEN;
+    char str_buffer[MAX_LINE_LEN];
+
+    matrix_sf *new_matrix = NULL; // last matrix to be assigned/calculated
+    bst_sf *root = NULL; // new binary search tree
+
+    // read file per line
+    while (getline(&str, &max_line_size, file) != -1) {
+        char matrix_name;
+        if (sscanf(str, " %c = %[^\n] ", &matrix_name, str_buffer) != 2)
+            continue; // should not happen with blank lines
+        
+        // check whether it is an expression or a matrix definition
+        // an expression contains letters, matrix definitions don't
+        // matrix definitions contain numbers, expressions don't
+        int is_a_matrix = 0;
+        int is_an_expression = 0;
+        for (int i = 0; str_buffer[i] != '\0'; i++) {
+            char check = (unsigned char)str_buffer[i];
+            if (isalpha(check)) is_an_expression = 1;
+            if (isdigit(check)) is_a_matrix = 1;
+        }
+        
+        // defining a matrix then inserting it to a BST
+        if (is_a_matrix) {
+            new_matrix = create_matrix_sf(matrix_name, str_buffer);
+            if (new_matrix == NULL) // if it is invalid
+                continue;
+            new_matrix->name = matrix_name;
+            
+            // only insert a new matrix if that matrix doesn't exist in the BST.
+            matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
+            if (find_matrix == NULL)
+                root = insert_bst_sf(new_matrix, root);
+        }
+        // evaluate a matrix operation
+        if (is_an_expression) {
+            new_matrix = evaluate_expr_sf(matrix_name, str_buffer, root);
+            if (new_matrix == NULL) // if it is invalid
+                continue;
+            new_matrix->name = matrix_name;
+
+            // only insert a new matrix if that matrix doesn't exist in the BST.
+            matrix_sf *find_matrix = find_bst_sf(matrix_name, root);
+            if (find_matrix == NULL)
+                root = insert_bst_sf(new_matrix, root);
+        }
+    }
+
+    // copy the matrix to a different allocation
+    matrix_sf *result_matrix = NULL;
+    if (new_matrix != NULL) {
+        result_matrix = copy_matrix(new_matrix->num_rows, new_matrix->num_cols, new_matrix->values);
+        result_matrix->name = new_matrix->name;
+    }
+
+    fclose(file);
+    free(str);
+    free_bst_sf(root);
+    return result_matrix;
 }
 
 // This is a utility function used during testing. Feel free to adapt the code to implement some of
