@@ -19,9 +19,3 @@ void expect_no_valgrind_errors(int status);
 void expect_outfile_matches(char *name);
 
 void expect_matrices_equal(matrix_sf *actual, unsigned int num_rows, unsigned int num_cols, int *values);
-
-
-
-
-
-

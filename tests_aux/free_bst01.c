@@ -1,6 +1,6 @@
 #include "unit_tests.h"
 #include "hw7.h"
-int main() { 
+int main(void) { 
     bst_sf *root = NULL;
     char names[] = "HBZ";
     matrix_sf *mats[strlen(names)];
