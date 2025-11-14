@@ -127,8 +127,8 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     // parsing the first two integers and the rest of the string
     int NR, NC;
-    char rest[MAX_LINE_LEN];
-    if (sscanf(expr, " %d %d %127[^\n]", &NR, &NC, rest) != 3)
+    char rest[4096];
+    if (sscanf(expr, " %d %d %4095[^\n]", &NR, &NC, rest) != 3)
         return NULL;
 
     // allocate matrix
@@ -293,16 +293,15 @@ matrix_sf *execute_script_sf(char *filename) {
     // variables to help with reading file 
     char *str = NULL;
     FILE *file = fopen(filename, "r");
-    size_t max_line_size = MAX_LINE_LEN;
-    char str_buffer[MAX_LINE_LEN];
+    char str_buffer[4096];
 
     matrix_sf *new_matrix = NULL; // last matrix to be assigned/calculated
     bst_sf *root = NULL; // new binary search tree
 
-    // read file per line
-    while (getline(&str, &max_line_size, file) != -1) {
+    // read file per line, maximum MAX_LINE_LEN lines
+    while (getline(&str, MAX_LINE_LEN, file) != -1) {
         char matrix_name;
-        if (sscanf(str, " %c = %127[^\n] ", &matrix_name, str_buffer) != 2)
+        if (sscanf(str, " %c = %4095[^\n] ", &matrix_name, str_buffer) != 2)
             continue; // should not happen with blank lines
         
         // check whether it is an expression or a matrix definition
